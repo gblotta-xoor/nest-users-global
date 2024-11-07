@@ -48,6 +48,21 @@ describe('UsersController', () => {
 
       expect(await controller.create(createUserDto as CreateUserDto)).toBe(result);
     });
+
+    it('should fail when creating with duplicated email', async () => {
+      const createUserDto: CreateUserDto = {
+        name: 'John Doe', email: 'test@m.com', age: 30,
+        profile: {
+          code: 1234,
+          name: 'Test'
+        }
+      };
+      jest.spyOn(service, 'create').mockImplementation(async () => {
+        throw new Error('Email already exists');
+      });
+
+      await expect(controller.create(createUserDto)).rejects.toThrow('Email already exists');
+    });
   });
 
   describe('findAll', () => {

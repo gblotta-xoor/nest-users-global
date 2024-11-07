@@ -10,8 +10,7 @@ export class User {
     @Column()
     name: string;
 
-    @Unique(['email'])
-    @Column()
+    @Column({ unique: true })
     email: string;
 
     @IsNumber()
